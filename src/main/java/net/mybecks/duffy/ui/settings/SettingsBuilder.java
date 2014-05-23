@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -29,35 +30,40 @@ public class SettingsBuilder implements ActionListener {
 	private static final Logger LOG = LoggerFactory.getLogger(SettingsBuilder.class);	
 	private JFrame frame = new JFrame();
 	private JButton btnFC;
+	private JButton btnFCNodeHome;
 	private JButton btnSave;
 	private JTextField tfPackages;
-	private JFileChooser fc;
 	private JLabel lblPackages;
+	private JLabel lblNodeHome;
+	private JTextField tfNodeHome;
 
 	public SettingsBuilder() {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle("Preferences");
 		frame.setPreferredSize(new Dimension(400, 300));
 		frame.setLocationRelativeTo(null);
-		fc = new JFileChooser();
+		
 		lblPackages = new JLabel("Package.json:");
 		tfPackages = new JTextField();
+		lblNodeHome = new JLabel("Node.js Home");
+		tfNodeHome = new JTextField();
+		btnFCNodeHome = new JButton("...");
 		btnFC = new JButton("...");
 		btnSave = new JButton("Save");
 	}
 
 	public void createAndShowSettings() {
-		fc.setFileFilter(new CustomFileFilter());
-		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		
 		
 		if(Settings.getInstance().getPackageJsonPath() != ""){
 			tfPackages.setText(Settings.getInstance().getPackageJsonPath());
 		}
 		tfPackages.setEditable(false);
-		
-		
+		tfNodeHome.setEditable(false);
+//		Map<String, String> var = System.getenv();//System.getenv("NODE_JS");
 		
 		btnFC.addActionListener(this);
+		btnFCNodeHome.addActionListener(this);
 		btnSave.addActionListener(this);
 		
 		
@@ -71,17 +77,24 @@ public class SettingsBuilder implements ActionListener {
 
 		layout.setHorizontalGroup(layout
 				.createSequentialGroup()
-				.addComponent(lblPackages)
-				.addGroup(
-						layout.createParallelGroup(
-								GroupLayout.Alignment.LEADING).addComponent(
-								tfPackages))
 				.addGroup(
 						layout.createParallelGroup(
 								GroupLayout.Alignment.LEADING)
-								.addComponent(btnFC).addComponent(btnSave)));
+								.addComponent(lblPackages)
+								.addComponent(lblNodeHome))
+				.addGroup(
+						layout.createParallelGroup(
+								GroupLayout.Alignment.LEADING)
+								.addComponent(tfPackages)
+								.addComponent(tfNodeHome))
+				.addGroup(
+						layout.createParallelGroup(
+								GroupLayout.Alignment.LEADING)
+								.addComponent(btnFC)
+								.addComponent(btnFCNodeHome)
+								.addComponent(btnSave)));
 
-		layout.linkSize(SwingConstants.HORIZONTAL, btnFC, btnSave);
+		layout.linkSize(SwingConstants.HORIZONTAL, btnFC, btnFCNodeHome, btnSave);
 
 		layout.setVerticalGroup(layout
 				.createSequentialGroup()
@@ -89,7 +102,14 @@ public class SettingsBuilder implements ActionListener {
 						layout.createParallelGroup(
 								GroupLayout.Alignment.BASELINE)
 								.addComponent(lblPackages)
-								.addComponent(tfPackages).addComponent(btnFC))
+								.addComponent(tfPackages)
+								.addComponent(btnFC))
+				.addGroup(
+						layout.createParallelGroup(
+								GroupLayout.Alignment.BASELINE)
+								.addComponent(lblNodeHome)
+								.addComponent(tfNodeHome)
+								.addComponent(btnFCNodeHome))
 				.addComponent(btnSave));
 
 		// Display the window.
@@ -100,8 +120,13 @@ public class SettingsBuilder implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		JFileChooser fc;
+		
 		if (e.getSource() == btnFC) {
-
+			fc = new JFileChooser();
+			fc.setFileFilter(new CustomFileFilter());
+			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int retVal = fc.showOpenDialog(btnFC);
 			if (retVal == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
@@ -111,9 +136,21 @@ public class SettingsBuilder implements ActionListener {
 			} else {
 				// log.append("Open command cancelled by user." + newline);
 			}
-
 		}
-
+		
+		if (e.getSource() == btnFCNodeHome) {
+			fc = new JFileChooser();
+			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			int retVal = fc.showOpenDialog(btnFCNodeHome);
+			if (retVal == JFileChooser.APPROVE_OPTION) {
+				
+				LOG.info("node home loaded");
+				// save to settings helper
+			} else {
+				// log.append("Open command cancelled by user." + newline);
+			}
+		}
+		
 		if (e.getSource() == btnSave) {
 			LOG.info("Button 'Save' pressed");
 			Settings.getInstance().setPackageJsonPath(tfPackages.getText());

@@ -18,7 +18,7 @@ public class SettingsHandler {
 		new Thread(new Runnable() {
 			
 			@Override
-			public void run() {
+			public void run() {				
 				String content = null;
 				try {
 					content = FileHandler.readFile(Settings.getInstance().getPackageJsonPath(),
@@ -31,5 +31,6 @@ public class SettingsHandler {
 				JsonParser.parsePackageFile(content);
 			}
 		}).start();
+		
 	}
 }

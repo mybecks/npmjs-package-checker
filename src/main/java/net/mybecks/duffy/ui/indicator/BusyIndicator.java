@@ -12,12 +12,12 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLayer;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.plaf.LayerUI;
 
-public class BusyIndicator extends LayerUI<JFrame> implements ActionListener {
+public class BusyIndicator extends LayerUI<JPanel> implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private boolean mIsRunning;
 	private boolean mIsFadingOut;

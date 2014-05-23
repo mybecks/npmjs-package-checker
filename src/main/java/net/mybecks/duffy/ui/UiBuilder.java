@@ -8,19 +8,16 @@ import java.util.Date;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JLayer;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import net.mybecks.duffy.ui.indicator.BusyIndicator;
 import net.mybecks.duffy.ui.menu.MenuBuilder;
 import net.mybecks.duffy.ui.table.TableBuilder;
 
 public class UiBuilder {
 	private static JFrame frame = new JFrame();
 	private static JLabel lblLastUpdatedText;
-//	private static JLabel lblLastUpdatedValue;
+//	public static BusyIndicator layerUI;
 
 	public UiBuilder() {
 
@@ -37,8 +34,15 @@ public class UiBuilder {
 		frame.setLocationRelativeTo(null);
 		frame.setJMenuBar(new MenuBuilder(frame).getMenuBar());
 		
-//		final BusyIndicator layerUI = new BusyIndicator();
-//		JLayer<JFrame> jlayer = new JLayer<JFrame>(frame, layerUI);
+//		layerUI = new BusyIndicator();
+//		JPanel panel = new JPanel() {
+//
+//            @Override
+//            public Dimension getPreferredSize() {
+//                return new Dimension(400, 300);
+//            }
+//        };
+//        JLayer<JPanel> jlayer = new JLayer<JPanel>(panel, layerUI);
 //		frame.add(jlayer);
 		
 		JTable table = new TableBuilder().getTable();
