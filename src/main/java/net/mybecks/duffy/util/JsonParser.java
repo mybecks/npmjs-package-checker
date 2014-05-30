@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 
 import net.mybecks.duffy.pojo.Package;
 import net.mybecks.duffy.pojo.Settings;
-import net.mybecks.duffy.ui.UiBuilder;
 import net.mybecks.duffy.ui.table.TableBuilder;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -26,6 +25,26 @@ public class JsonParser {
 		
 		
 		LOG.info(Settings.getInstance().toString());
+	}
+	
+	public static void parseGlobalPackageFile(String content){
+		LOG.info("Start parsing");
+		JSONObject json = (JSONObject) JSONSerializer.toJSON(content);
+		
+		Package pckg = new Package();
+		String name = json.getString("name");
+		LOG.info("Parsing package: "+name);
+		pckg.setName(name);
+		pckg.setLocalVersion(json.getString("version"));
+		
+		try {
+			pckg.setRemoteVersion(RemoteVersionChecker.getRemoteVersion(name));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			pckg.setRemoteVersion("error");
+		}
+		Settings.getInstance().addPackage(pckg);
+		LOG.info("Added package: "+pckg.getName());
 		TableBuilder.refreshTableData();
 	}
 	
@@ -34,6 +53,8 @@ public class JsonParser {
 		for(int i=0; i<packageNames.length; i++){
 			Package pckg = new Package();
 			pckg.setName(packageNames[i].toString());
+			LOG.info("Parsing package: "+packageNames[i].toString());
+			
 			String localVersion = currentObj.getString(packageNames[i].toString());
 			String pattern = "[~^]";
 			pckg.setLocalVersion(localVersion.replaceAll(pattern,""));
@@ -44,8 +65,9 @@ public class JsonParser {
 				e.printStackTrace();
 			}
 			
-			LOG.info("Add package: "+pckg.getName());
 			Settings.getInstance().addPackage(pckg);
+			LOG.info("Added package: "+pckg.getName());
+			TableBuilder.refreshTableData();
 		}
 
 	}

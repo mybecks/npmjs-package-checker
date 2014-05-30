@@ -83,7 +83,7 @@ public class UiBuilder {
 	}
 	
 	public static void updateLastUpdatedTime(){
-		String lastUpdated = lblLastUpdatedText.getText();
+		String lastUpdated = lblLastUpdatedText.getText().substring(0, 17);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
 		lastUpdated+=dateFormat.format(date);

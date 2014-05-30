@@ -7,6 +7,7 @@ public class Settings {
 	private static Settings instance = new Settings();
 	private List<Package> packages;
 	private String packageJsonPath;
+	private String nodeInstallationPath;
 	private String repositoryUrl;
 	
 	private Settings() {
@@ -31,14 +32,7 @@ public class Settings {
 		for(int i=0; i<packages.size(); i++){
 
 			String remoteVersion = packages.get(i).getRemoteVersion() == null ? "0.0.0" : packages.get(i).getRemoteVersion();
-//			String icon;
-//			if(localVersion.equals(remoteVersion)){
-//				icon = "1";
-//			}else{
-//				icon = "-1";
-//			}
-			
-//			data[i][0] = icon;
+
 			data[i][0] = packages.get(i).getName();
 			data[i][1] = packages.get(i).getLocalVersion();
 			data[i][2] = remoteVersion;
@@ -53,7 +47,15 @@ public class Settings {
 	public void setPackageJsonPath(String packageJsonPath) {
 		this.packageJsonPath = packageJsonPath;
 	}
-	
+		
+	public String getNodeInstallationPath() {
+		return nodeInstallationPath;
+	}
+
+	public void setNodeInstallationPath(String nodeInstallationPath) {
+		this.nodeInstallationPath = nodeInstallationPath;
+	}
+
 	public String getRepositoryUrl() {
 		return repositoryUrl;
 	}

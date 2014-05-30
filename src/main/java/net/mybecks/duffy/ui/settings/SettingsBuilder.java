@@ -45,7 +45,7 @@ public class SettingsBuilder implements ActionListener {
 		
 		lblPackages = new JLabel("Package.json:");
 		tfPackages = new JTextField();
-		lblNodeHome = new JLabel("Node.js Home");
+		lblNodeHome = new JLabel("node.js Home");
 		tfNodeHome = new JTextField();
 		btnFCNodeHome = new JButton("...");
 		btnFC = new JButton("...");
@@ -58,6 +58,11 @@ public class SettingsBuilder implements ActionListener {
 		if(Settings.getInstance().getPackageJsonPath() != ""){
 			tfPackages.setText(Settings.getInstance().getPackageJsonPath());
 		}
+		
+		if(Settings.getInstance().getNodeInstallationPath() != ""){
+			tfNodeHome.setText(Settings.getInstance().getNodeInstallationPath());
+		}
+		
 		tfPackages.setEditable(false);
 		tfNodeHome.setEditable(false);
 //		Map<String, String> var = System.getenv();//System.getenv("NODE_JS");
@@ -143,7 +148,8 @@ public class SettingsBuilder implements ActionListener {
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			int retVal = fc.showOpenDialog(btnFCNodeHome);
 			if (retVal == JFileChooser.APPROVE_OPTION) {
-				
+				File file = fc.getSelectedFile();
+				tfNodeHome.setText(file.getAbsolutePath());
 				LOG.info("node home loaded");
 				// save to settings helper
 			} else {
@@ -154,6 +160,7 @@ public class SettingsBuilder implements ActionListener {
 		if (e.getSource() == btnSave) {
 			LOG.info("Button 'Save' pressed");
 			Settings.getInstance().setPackageJsonPath(tfPackages.getText());
+			Settings.getInstance().setNodeInstallationPath(tfNodeHome.getText());
 			
 			new Thread(new Runnable() {
 				

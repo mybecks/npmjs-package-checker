@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import net.mybecks.duffy.pojo.Settings;
-import net.mybecks.duffy.ui.UiBuilder;
 import net.mybecks.duffy.util.SystemUtils;
 
 import org.slf4j.Logger;
@@ -22,6 +22,7 @@ public class TableBuilder {
 	private static final Logger LOG = LoggerFactory.getLogger(TableBuilder.class);	
 	private JTable table;
 	private static TableModel tableModel = new TableModel();
+//	private static DefaultTableModel tableModel = new DefaultTableModel();
 	
 	public TableBuilder(){
 		
@@ -29,6 +30,9 @@ public class TableBuilder {
 	
 	public JTable getTable(){
 		// Create the JTable using the TableModel
+//		String[] columnNames = { "npm Package", "Local Version", "Remote Version" };
+//		tableModel.setColumnIdentifiers(columnNames);
+//		tableModel.setColumnCount(0);
 		table = new JTable(tableModel){
 
 			private static final long serialVersionUID = 1L;
@@ -89,7 +93,21 @@ public class TableBuilder {
 	}
 	
 	public static void refreshTableData(){
+		
+//		for(int i=0; i<Settings.getInstance().getPackages().size(); i++){
+//			String packageName = Settings.getInstance().getPackages().get(i).getName();
+//			String localVersion = Settings.getInstance().getPackages().get(i).getLocalVersion();
+//			String remoteVersion = Settings.getInstance().getPackages().get(i).getRemoteVersion();
+//			Object[] data = {packageName, localVersion, remoteVersion};
+//			tableModel.addRow(data);
+//		}
 		tableModel.updateData();
 		tableModel.fireTableDataChanged();
+	}
+	
+	public static void clearTableData(){
+//		tableModel.setRowCount(0);
+		tableModel.fireTableDataChanged();
+//		tableModel = new TableModel();
 	}
 }

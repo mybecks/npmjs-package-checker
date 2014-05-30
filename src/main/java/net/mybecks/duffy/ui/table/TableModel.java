@@ -43,4 +43,16 @@ public class TableModel extends AbstractTableModel{
 	public void updateData(){
 		this.data = Settings.getInstance().getPackagesAsMultiDimArray();
 	}
+	
+	private void deleteRow() {
+//        for(int rowIndex = this.data.length - 1; rowIndex >= 0; rowIndex--) {
+//         
+//        	this.data.remove(rowIndex);
+//        }
+        fireTableDataChanged();
+	}
+	
+	public void clearData(){
+		deleteRow();
+	}
 }
