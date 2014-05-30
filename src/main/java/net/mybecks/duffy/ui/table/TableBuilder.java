@@ -106,8 +106,7 @@ public class TableBuilder {
 	}
 	
 	public static void clearTableData(){
-//		tableModel.setRowCount(0);
+		tableModel.clearData();
 		tableModel.fireTableDataChanged();
-//		tableModel = new TableModel();
 	}
 }

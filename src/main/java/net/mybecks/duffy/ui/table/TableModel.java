@@ -1,14 +1,14 @@
 package net.mybecks.duffy.ui.table;
 
+import java.util.ArrayList;
+
 import javax.swing.table.AbstractTableModel;
 
+import net.mybecks.duffy.pojo.Package;
 import net.mybecks.duffy.pojo.Settings;
 
 public class TableModel extends AbstractTableModel{
 		
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5068690632902944617L;
 
 	private String[] columnNames = { "npm Package", "Local Version", "Remote Version" };
@@ -44,15 +44,9 @@ public class TableModel extends AbstractTableModel{
 		this.data = Settings.getInstance().getPackagesAsMultiDimArray();
 	}
 	
-	private void deleteRow() {
-//        for(int rowIndex = this.data.length - 1; rowIndex >= 0; rowIndex--) {
-//         
-//        	this.data.remove(rowIndex);
-//        }
-        fireTableDataChanged();
-	}
 	
 	public void clearData(){
-		deleteRow();
+		Settings.getInstance().getPackages().clear();
+		this.data = Settings.getInstance().getPackagesAsMultiDimArray();
 	}
 }
